@@ -14,6 +14,11 @@ import { TbUsersGroup } from "react-icons/tb";
 import SettingModal from "../../components/SettingModal/SettingModal";
 import ProfileModal from "../../components/ProfileModal/ProfileModal";
 import MemberModal from "../../components/MemberModal/MemberModal";
+
+import image1 from '../../assets/image (1).png'
+import image2 from '../../assets/image (2).jpg'
+import image3 from '../../assets/image (3).jpg'
+import image4 from '../../assets/group.png'
 const Home = () => {
   return (
     <>
@@ -23,9 +28,7 @@ const Home = () => {
       {/* ------------------------- */}
       <div className="mx-auto h-screen p-2">
         <div className="flex justify-between items-center mx-3">
-          <div className="flex items-center font-kaushan text-2xl">
-            Chatify <img src={image} alt="" className="w-20 -ml-4" />
-          </div>
+          <div className="font-kaushan text-2xl">Chatify</div>
           <div className="flex items-center gap-3">
             <button
               className="btn btn-sm btn-circle btn-ghost flex tooltip"
@@ -67,15 +70,23 @@ const Home = () => {
             <p className="text-sm">Groups</p>
             <ul className="flex flex-col gap-3 p-2">
               <li className="flex-row gap-3 flex p-3 bg-gray-600">
-                <img src="" alt="" className="avatar w-5 h-5 rounded-full" />
-                <h1 className="font-semibold text-sm">Room1</h1>
+                <img src={image4} alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Group 1</h1>
               </li>
             </ul>
             <p className="text-sm mt-6">Members</p>
             <ul className="flex flex-col gap-3 p-2">
               <li className="card flex-row gap-3 p-3 flex items-end">
-                <img src="" alt="" className="avatar w-5 h-5 rounded-full" />
-                <h1 className="font-semibold text-sm">Sajjad Hosan</h1>
+                <img src={image1} alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Mark Henry</h1>
+              </li>
+              <li className="card flex-row gap-3 p-3 flex items-end">
+                <img src={image2} alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Jhon Deo</h1>
+              </li>
+              <li className="card flex-row gap-3 p-3 flex items-end">
+                <img src={image3} alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Harry </h1>
               </li>
             </ul>
           </div>
@@ -83,11 +94,11 @@ const Home = () => {
             <div className="flex flex-col justify-between h-full">
               <div className="flex items-center gap-2 border-b pb-3">
                 <img
-                  src="/public/logo.png"
+                  src={image4}
                   alt=""
-                  className="w-10 h-10 border rounded-full"
+                  className="w-10 h-10 object-contain rounded-full"
                 />
-                <p className="text-lg">Anymore Shadow</p>
+                <p className="text-lg">Group 1</p>
               </div>
               <div className="mt-5 flex justify-between overflow-hidden h-full md:h-[23rem] mb-10">
                 <div className="overflow-scroll w-full flex flex-col gap-5 items-start">

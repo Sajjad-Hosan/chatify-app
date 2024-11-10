@@ -8,23 +8,22 @@ import {
 } from "react-icons/fa6";
 
 const Auth = () => {
-
   const [tab, setTab] = useState(0);
   return (
     <>
       <div className="max-w-screen-sm mx-auto p-6">
-        <div className="card bg-base-100 md:p-8 h-[620px] items-center justify-center relative mt-8">
+        <div className="card bg-base-100 md:p-8 h-[550px] items-center justify-center relative mt-8">
           <div className="mx-auto">
-            <h1 className="text-3xl font-kaushan">
+            <h1 className="text-3xl font-kaushan flex items-center">
               Welcome To Chatify
+              <img src={image} alt="" className="w-24 h-24 object-contain mt-2" />
             </h1>
           </div>
           {/* <div className="mt-2"> */}
-          <div className="card mt-2 p-3 mx-auto w-full">
+          <div className="card mt-2 p-3 mx-auto w-full relative">
             {tab === 0 ? <Login /> : tab === 1 ? <Register /> : ""}
             {/* </div> */}
-          </div>
-          <div className="absolute bottom-6 flex justify-start w-11/12">
+          <div className="absolute -bottom-10 flex justify-start w-11/12">
             {tab === 0 ? (
               <button className="btn btn-ghost px-8" onClick={() => setTab(1)}>
                 <FaPersonWalkingArrowRight className="text-lg" />
@@ -36,6 +35,7 @@ const Auth = () => {
                 <FaPersonWalkingArrowLoopLeft className="text-lg" />
               </button>
             )}
+          </div>
           </div>
         </div>
       </div>

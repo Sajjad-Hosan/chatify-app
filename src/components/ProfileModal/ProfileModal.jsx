@@ -17,8 +17,8 @@ const ProfileModal = () => {
               </button>
             </form>
           </div>
-          <div className="p-5 flex flex-row gap-10 mt-5">
-            <img src="" className="card w-40 h-40 avatar rounded-full" />
+          <div className="p-5 flex flex-col md:flex-row gap-10 mt-5">
+            <img src="" className="card w-40 h-40 avatar rounded-full mx-auto" />
             <div className="flex flex-col gap-2">
               <p className="text-sm badge badge-neutral">Active</p>
               <h1 className="fon-semibold">Sajjad Hosan</h1>

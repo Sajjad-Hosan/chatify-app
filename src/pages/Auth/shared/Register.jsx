@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { FaPersonWalkingArrowRight } from "react-icons/fa6";
+import {
+  FaPersonWalkingArrowRight,
+  FaRegEye,
+  FaRegEyeSlash,
+} from "react-icons/fa6";
 import { LuImagePlus } from "react-icons/lu";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
 
 const Register = () => {
+  const { handleRegisterUser } = useContext(AuthContext);
   const [image, setImage] = useState(null);
+  const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
   const handleRegister = (e) => {
     console.log(e);
@@ -52,7 +59,7 @@ const Register = () => {
             type="text"
             placeholder="name"
             className="input input-bordered w-full"
-            {...register}
+            {...register("name")}
           />
         </label>
         <label className="form-control w-full ">
@@ -63,10 +70,10 @@ const Register = () => {
             type="text"
             placeholder="email"
             className="input input-bordered w-full"
-            {...register}
+            {...register("email")}
           />
         </label>
-        <label className="form-control w-full ">
+        <label className="form-control w-full relative">
           <div className="label">
             <span className="label-text">Write your password</span>
           </div>
@@ -74,8 +81,11 @@ const Register = () => {
             type="text"
             placeholder="password"
             className="input input-bordered w-full"
-            {...register}
+            {...register("password")}
           />
+          {/* <span className="absolute right-5">
+            {show ? <FaRegEye /> : <FaRegEyeSlash />}
+          </span> */}
         </label>
         <div className="flex justify-end w-full mt-6">
           <button className="btn btn-neutral px-8">

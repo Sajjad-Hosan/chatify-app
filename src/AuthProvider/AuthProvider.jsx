@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import app from "../firebase/firebase";
 
-const AuthContext = createContext(null);
+export const AuthContext = new createContext(null);
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
@@ -32,7 +32,7 @@ const AuthProvider = ({ children }) => {
   const createNewUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  const handleRegister = (email, password) => {
+  const handleRegisterUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
   const handleSignOut = () => {
@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
 
   const contextValues = {
     createNewUser,
-    handleRegister,
+    handleRegisterUser,
     handleSignOut,
     handleGoogle,
   };

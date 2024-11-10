@@ -8,15 +8,15 @@ import {
 } from "react-icons/fa6";
 
 const Auth = () => {
+
   const [tab, setTab] = useState(0);
   return (
     <>
       <div className="max-w-screen-sm mx-auto p-6">
         <div className="card bg-base-100 md:p-8 h-[620px] items-center justify-center relative mt-8">
           <div className="mx-auto">
-            <h1 className="text-3xl font-kaushan flex items-center">
+            <h1 className="text-3xl font-kaushan">
               Welcome To Chatify
-              <img src={image} alt="" className="w-24" />
             </h1>
           </div>
           {/* <div className="mt-2"> */}

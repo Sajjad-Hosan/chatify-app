@@ -13,11 +13,13 @@ import { IoMdImages } from "react-icons/io";
 import { TbUsersGroup } from "react-icons/tb";
 import SettingModal from "../../components/SettingModal/SettingModal";
 import ProfileModal from "../../components/ProfileModal/ProfileModal";
+import MemberModal from "../../components/MemberModal/MemberModal";
 const Home = () => {
   return (
     <>
       <SettingModal />
       <ProfileModal />
+      <MemberModal />
       {/* ------------------------- */}
       <div className="mx-auto h-screen p-2">
         <div className="flex justify-between items-center mx-3">
@@ -28,6 +30,9 @@ const Home = () => {
             <button
               className="btn btn-sm btn-circle btn-ghost flex tooltip"
               data-tip="Members"
+              onClick={() =>
+                document.getElementById("member_modal").showModal()
+              }
             >
               <TbUsersGroup className="text-lg" />
             </button>
@@ -58,7 +63,15 @@ const Home = () => {
           </div>
         </div>
         <div className="flex flex-col md:grid grid-cols-5 gap-1 mx-5 mt-2 h-[580px]">
-          <div className="col-span-1 border-r hidden lg:flex">
+          <div className="col-span-1 border-r hidden lg:flex flex-col">
+            <p className="text-sm">Groups</p>
+            <ul className="flex flex-col gap-3 p-2">
+              <li className="flex-row gap-3 flex p-3 bg-gray-600">
+                <img src="" alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Room1</h1>
+              </li>
+            </ul>
+            <p className="text-sm mt-6">Members</p>
             <ul className="flex flex-col gap-3 p-2">
               <li className="card flex-row gap-3 p-3 flex items-end">
                 <img src="" alt="" className="avatar w-5 h-5 rounded-full" />

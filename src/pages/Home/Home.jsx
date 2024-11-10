@@ -11,126 +11,139 @@ import ReceiveBox from "../../components/ReceiveBox/ReceiveBox";
 import { HiMicrophone } from "react-icons/hi";
 import { IoMdImages } from "react-icons/io";
 import { TbUsersGroup } from "react-icons/tb";
+import SettingModal from "../../components/SettingModal/SettingModal";
+import ProfileModal from "../../components/ProfileModal/ProfileModal";
 const Home = () => {
   return (
-    <div className="mx-auto h-screen p-2">
-      <div className="flex justify-between items-center mx-3">
-        <div className="flex items-center font-kaushan text-2xl">
-          Chatify <img src={image} alt="" className="w-20 -ml-4" />
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            className="btn btn-sm btn-circle btn-ghost flex tooltip"
-            data-tip="Members"
-          >
-            <TbUsersGroup className="text-lg" />
-          </button>
-          <button
-            className="btn btn-sm btn-circle btn-ghost flex tooltip"
-            data-tip="Setting"
-          >
-            <IoSettingsOutline className="text-lg" />
-          </button>
-          <button
-            className="btn btn-sm btn-circle btn-ghost flex tooltip"
-            data-tip="Profile"
-          >
-            <FaRegUserCircle className="text-lg" />
-          </button>
-          <button
-            className="btn btn-sm btn-circle btn-ghost flex tooltip"
-            data-tip="Menu"
-          >
-            <RiMenu5Line className="text-lg" />
-          </button>
-        </div>
-      </div>
-      <div className="flex flex-col md:grid grid-cols-5 gap-1 mx-5 mt-2 h-[580px]">
-        <div className="col-span-1 border-r hidden ">
-          <ul className="flex flex-col gap-3 p-2">
-            <li className="card flex-row gap-3 p-3 flex items-end">
-              <img src="" alt="" className="avatar w-5 h-5 rounded-full" />
-              <h1 className="font-semibold text-sm">Sajjad Hosan</h1>
-            </li>
-          </ul>
-        </div>
-        <div className="col-span-4 md:p-5">
-          <div className="flex flex-col justify-between h-full">
-            <div className="flex items-center gap-2 border-b pb-3">
-              <img
-                src="/public/logo.png"
-                alt=""
-                className="w-10 h-10 border rounded-full"
-              />
-              <p className="text-lg">Anymore Shadow</p>
-            </div>
-            <div className="mt-5 flex justify-between overflow-hidden h-full md:h-[23rem] mb-10">
-              <div className="overflow-scroll w-full flex flex-col gap-5 items-start">
-                <div className="flex w-full">
-                  <SendBox />
-                </div>
-                <div className="flex justify-end w-full">
-                  <ReceiveBox />
-                </div>
-                <div className="flex w-full">
-                  <SendBox />
-                </div>
-                <div className="flex justify-end w-full">
-                  <ReceiveBox />
-                </div>
-                <div className="flex w-full">
-                  <SendBox />
-                </div>
-                <div className="flex justify-end w-full">
-                  <ReceiveBox />
-                </div>
-              </div>
-            </div>
-            <footer className="flex justify-between items-center w-full md:w-[79%] fixed bottom-5 right-0  px-2">
-              <div className="flex items-center gap-2">
-                <button
-                  className="btn btn-circle btn-ghost flex tooltip"
-                  data-tip="More"
-                >
-                  <LuBadgePlus className="text-lg" />
-                </button>
-                <button
-                  className="btn btn-circle btn-ghost flex tooltip"
-                  data-tip="Camera"
-                >
-                  <IoCameraSharp className="text-lg" />
-                </button>
-                <button
-                  className="btn btn-circle btn-ghost flex tooltip"
-                  data-tip="Voice"
-                >
-                  <HiMicrophone className="text-lg" />
-                </button>
-                <button
-                  className="btn btn-circle btn-ghost flex tooltip"
-                  data-tip="Picture"
-                >
-                  <IoMdImages className="text-lg" />
-                </button>
-              </div>
-              <div className="flex items-end gap-2 w-3/4">
-                <textarea
-                  rows={1}
-                  className="textarea textarea-bordered w-full"
-                ></textarea>
-                <button
-                  className="btn btn-neutral flex tooltip"
-                  data-tip="Send"
-                >
-                  <BsSend className="text-lg" />
-                </button>
-              </div>
-            </footer>
+    <>
+      <SettingModal />
+      <ProfileModal />
+      {/* ------------------------- */}
+      <div className="mx-auto h-screen p-2">
+        <div className="flex justify-between items-center mx-3">
+          <div className="flex items-center font-kaushan text-2xl">
+            Chatify <img src={image} alt="" className="w-20 -ml-4" />
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              className="btn btn-sm btn-circle btn-ghost flex tooltip"
+              data-tip="Members"
+            >
+              <TbUsersGroup className="text-lg" />
+            </button>
+            <button
+              className="btn btn-sm btn-circle btn-ghost flex tooltip"
+              data-tip="Setting"
+              onClick={() =>
+                document.getElementById("setting_modal").showModal()
+              }
+            >
+              <IoSettingsOutline className="text-lg" />
+            </button>
+            <button
+              className="btn btn-sm btn-circle btn-ghost flex tooltip"
+              data-tip="Profile"
+              onClick={() =>
+                document.getElementById("profile_modal").showModal()
+              }
+            >
+              <FaRegUserCircle className="text-lg" />
+            </button>
+            <button
+              className="btn btn-sm btn-circle btn-ghost flex tooltip"
+              data-tip="Menu"
+            >
+              <RiMenu5Line className="text-lg" />
+            </button>
           </div>
         </div>
-        {/* <div className="col-span-1 border">a</div> */}
+        <div className="flex flex-col md:grid grid-cols-5 gap-1 mx-5 mt-2 h-[580px]">
+          <div className="col-span-1 border-r hidden lg:flex">
+            <ul className="flex flex-col gap-3 p-2">
+              <li className="card flex-row gap-3 p-3 flex items-end">
+                <img src="" alt="" className="avatar w-5 h-5 rounded-full" />
+                <h1 className="font-semibold text-sm">Sajjad Hosan</h1>
+              </li>
+            </ul>
+          </div>
+          <div className="col-span-5 lg:col-span-4 md:p-5">
+            <div className="flex flex-col justify-between h-full">
+              <div className="flex items-center gap-2 border-b pb-3">
+                <img
+                  src="/public/logo.png"
+                  alt=""
+                  className="w-10 h-10 border rounded-full"
+                />
+                <p className="text-lg">Anymore Shadow</p>
+              </div>
+              <div className="mt-5 flex justify-between overflow-hidden h-full md:h-[23rem] mb-10">
+                <div className="overflow-scroll w-full flex flex-col gap-5 items-start">
+                  <div className="flex w-full">
+                    <SendBox />
+                  </div>
+                  <div className="flex justify-end w-full">
+                    <ReceiveBox />
+                  </div>
+                  <div className="flex w-full">
+                    <SendBox />
+                  </div>
+                  <div className="flex justify-end w-full">
+                    <ReceiveBox />
+                  </div>
+                  <div className="flex w-full">
+                    <SendBox />
+                  </div>
+                  <div className="flex justify-end w-full">
+                    <ReceiveBox />
+                  </div>
+                </div>
+              </div>
+              <footer className="flex justify-between items-center w-full md:w-[79%] fixed bottom-5 right-0  px-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    className="btn btn-circle btn-ghost flex tooltip"
+                    data-tip="More"
+                  >
+                    <LuBadgePlus className="text-lg" />
+                  </button>
+                  <button
+                    className="btn btn-circle btn-ghost flex tooltip"
+                    data-tip="Camera"
+                  >
+                    <IoCameraSharp className="text-lg" />
+                  </button>
+                  <button
+                    className="btn btn-circle btn-ghost flex tooltip"
+                    data-tip="Voice"
+                  >
+                    <HiMicrophone className="text-lg" />
+                  </button>
+                  <button
+                    className="btn btn-circle btn-ghost flex tooltip"
+                    data-tip="Picture"
+                  >
+                    <IoMdImages className="text-lg" />
+                  </button>
+                </div>
+                <div className="flex items-end gap-2 w-3/4">
+                  <textarea
+                    rows={1}
+                    className="textarea textarea-bordered w-full"
+                  ></textarea>
+                  <button
+                    className="btn btn-neutral flex tooltip"
+                    data-tip="Send"
+                  >
+                    <BsSend className="text-lg" />
+                  </button>
+                </div>
+              </footer>
+            </div>
+          </div>
+          {/* <div className="col-span-1 border">a</div> */}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 export default Home;

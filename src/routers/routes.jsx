@@ -18,7 +18,7 @@ const routes = createBrowserRouter([
         element: <Auth />,
       },
       {
-        path: "/profile",
+        path: "/update-profile",
         element: <Profile />,
       },
     ],

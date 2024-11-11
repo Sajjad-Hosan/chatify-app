@@ -18,7 +18,7 @@ const MessageBoxOptions = () => {
 
         <ul
           tabIndex={0}
-          className="dropdown-content menu bg-orange-300 rounded-box z-10 w-36 p-2"
+          className="dropdown-content menu bg-gray-700 rounded-box z-10 w-36 p-2"
         >
           <li>
             <a>

@@ -1,7 +1,8 @@
 import { useState } from "react";
+import imageaa from "../../assets/image (3).jpg";
 
 const Profile = () => {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(imageaa);
   const handleImage = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -10,11 +11,11 @@ const Profile = () => {
   };
   return (
     <div>
-      <div className="max-w-screen-lg card border h-[35rem] mx-auto mt-16 p-8">
+      <div className="max-w-screen-lg card h-[35rem] mx-auto mt-16 p-8">
         <div className="flex justify-between items-center">
           <h1 className="font-semibold">Update Profile</h1>
         </div>
-        <div className="flex justify-between mt-10">
+        <div className="flex flex-col md:flex-row justify-between mt-10">
           <div className="flex flex-col items-center mt-5">
             <img
               src={image}
@@ -42,7 +43,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2 w-full md:w-1/2">
-            <form className="flex flex-col gap-2 items-start">
+            <form className="flex flex-col gap-2 items-start mb-10">
               <label className="form-control w-full">
                 <div className="label">
                   <span className="label-text">User Name</span>

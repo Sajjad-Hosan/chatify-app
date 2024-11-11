@@ -1,6 +1,27 @@
+import { useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 
 const SettingModal = () => {
+  const [theme, setTheme] = useState("dark");
+  const [voice, setVoice] = useState(0);
+  const [sound, setSound] = useState(0);
+  const handleTheme = (theme) => {
+    setTheme(theme);
+    localStorage.setItem("theme", theme);
+    document.querySelector("html").setAttribute("data-theme", theme);
+  };
+
+  const Themes = [
+    "nord",
+    "dark",
+    "valentine",
+    "forest",
+    "pastel",
+    "wireframe",
+    "dracula",
+    "sunset",
+  ];
+
   return (
     <>
       <dialog id="setting_modal" className="modal">
@@ -19,9 +40,13 @@ const SettingModal = () => {
           <div className="p-5">
             <p className="mb-2">Theme</p>
             <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <button key={i} className="btn btn-active">
-                  Light
+              {Themes.map((tme, i) => (
+                <button
+                  key={i}
+                  className={`btn ${theme === tme ? "btn-neutral" : ""}`}
+                  onClick={() => handleTheme(tme)}
+                >
+                  {tme}
                 </button>
               ))}
             </div>
@@ -33,9 +58,13 @@ const SettingModal = () => {
                   type="range"
                   min={0}
                   max="100"
+                  defaultValue={sound}
                   className="range range-xs"
+                  onChange={(e) => setSound(e.target.value)}
                 />
-                <output className="text-sm font-semibold">00</output>
+                <output className="text-sm font-semibold">
+                  {sound < 10 ? "0" + sound : sound}
+                </output>
               </label>
               <label htmlFor="voice" className="flex items-center gap-2 w-full">
                 Voice
@@ -43,9 +72,13 @@ const SettingModal = () => {
                   type="range"
                   min={0}
                   max="100"
+                  defaultValue={voice}
                   className="range range-xs"
+                  onChange={(e) => setVoice(e.target.value)}
                 />
-                <output className="text-sm font-semibold">00</output>
+                <output className="text-sm font-semibold">
+                  {voice < 10 ? "0" + voice : voice}
+                </output>
               </label>
             </div>
             <p className="mt-6 mb-2">Language</p>

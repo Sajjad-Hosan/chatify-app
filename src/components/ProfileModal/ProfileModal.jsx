@@ -18,10 +18,13 @@ const ProfileModal = () => {
             </form>
           </div>
           <div className="p-5 flex flex-col md:flex-row gap-10 mt-5">
-            <img src="" className="card w-40 h-40 avatar rounded-full mx-auto" />
+            <img
+              src=""
+              className="card w-40 h-40 avatar rounded-full mx-auto"
+            />
             <div className="flex flex-col gap-2">
               <p className="text-sm badge badge-neutral">Active</p>
-              <h1 className="fon-semibold">Sajjad Hosan</h1>
+              <h1 className="fon-semibold">Mark Henry</h1>
               <p className="text-sm">
                 Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste,
                 impedit? Lorem ipsum dolor sit amet consectetur adipisicing

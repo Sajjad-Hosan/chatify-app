@@ -7,6 +7,7 @@ import ChatPage from "../pages/ChatPage/ChatPage";
 import { BsPersonPlus } from "react-icons/bs";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import ChatHome from "../pages/ChatPage/ChatHome";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 const routes = createBrowserRouter([
   {
@@ -15,15 +16,27 @@ const routes = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: (
+          <PrivateRoute>
+            <Home />
+          </PrivateRoute>
+        ),
         children: [
           {
             path: "/",
-            element: <ChatHome />,
+            element: (
+              <PrivateRoute>
+                <ChatHome />
+              </PrivateRoute>
+            ),
           },
           {
             path: "/chat/:id",
-            element: <ChatPage />,
+            element: (
+              <PrivateRoute>
+                <ChatPage />
+              </PrivateRoute>
+            ),
           },
         ],
       },

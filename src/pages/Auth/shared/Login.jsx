@@ -1,10 +1,25 @@
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FaPersonWalkingArrowLoopLeft } from "react-icons/fa6";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const navigate = useNavigate();
+  const { handleLoginUser } = useContext(AuthContext);
+  const [show, setShow] = useState(false);
   const { handleSubmit, register } = useForm();
   const handleLogin = (e) => {
-    console.log(e);
+    handleLoginUser(e.email, e.password).then((res) => {
+      console.log(res);
+      if (res?.user) {
+        navigate("/");
+        toast.success("Login");
+      }
+      toast.error("Something Wrong!");
+    });
   };
   return (
     <>
@@ -20,22 +35,28 @@ const Login = () => {
             type="text"
             placeholder="email"
             className="input input-bordered w-full"
-            {...register}
+            {...register("email")}
           />
         </label>
-        <label className="form-control w-full">
+        <label className="form-control w-full relative">
           <div className="label">
             <span className="label-text">Write your password</span>
           </div>
           <input
-            type="text"
+            type={show ? "text" : "password"}
             placeholder="password"
             className="input input-bordered w-full"
-            {...register}
+            {...register("password")}
           />
+          <span
+            className="absolute right-8 bottom-4"
+            onClick={() => setShow(!show)}
+          >
+            {show ? <FaRegEye /> : <FaRegEyeSlash />}
+          </span>
         </label>
         <div className="flex justify-end w-full mt-4">
-          <button className="btn btn-neutral px-8">
+          <button className="btn btn-neutral px-8" type="submit">
             <FaPersonWalkingArrowLoopLeft className="text-lg" /> Login
           </button>
         </div>

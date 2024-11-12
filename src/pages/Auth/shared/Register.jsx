@@ -8,14 +8,46 @@ import {
 } from "react-icons/fa6";
 import { LuImagePlus } from "react-icons/lu";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import useAxiosPublic from "../../../hooks/useAxiosPublic/useAxiosPublic";
+import axios from "axios";
 
 const Register = () => {
-  const { handleRegisterUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
+  const img_key = import.meta.env.VITE_IMGBB_KEY;
+  const img_url = `https://api.imgbb.com/1/upload?key=${img_key}`;
+  const { createNewUser, auth } = useContext(AuthContext);
   const [image, setImage] = useState(null);
   const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
-  const handleRegister = (e) => {
-    console.log(e);
+  const handleRegister = async (e) => {
+    // console.log(e);
+    const imgData = {
+      image: image,
+    };
+    const res = await axios.post(img_url, imgData, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    console.log(res.data?.data.display_url);
+    if (res.data?.data) {
+      const imageUrl = res.data?.data.display_url;
+      createNewUser(e.email, e.password).then((data) => {
+        console.log(data);
+        updateProfile(data?.user, {
+          displayName: e.name,
+          photoURL: imageUrl,
+        }).then(() => {
+          navigate("/");
+          toast.success("Successfully Register!");
+        });
+        toast.error("Something Wrong!");
+      });
+    }
   };
   return (
     <>
@@ -29,7 +61,7 @@ const Register = () => {
               <img
                 src={URL.createObjectURL(image)}
                 alt=""
-                className="avatar h-44"
+                className="avatar h-44 rounded-full"
               />
               <span
                 className="absolute btn btn-xs"
@@ -78,17 +110,20 @@ const Register = () => {
             <span className="label-text">Write your password</span>
           </div>
           <input
-            type="text"
+            type={show ? "text" : "password"}
             placeholder="password"
             className="input input-bordered w-full"
             {...register("password")}
           />
-          {/* <span className="absolute right-5">
+          <span
+            className="absolute right-8 bottom-4"
+            onClick={() => setShow(!show)}
+          >
             {show ? <FaRegEye /> : <FaRegEyeSlash />}
-          </span> */}
+          </span>
         </label>
         <div className="flex justify-end w-full mt-6">
-          <button className="btn btn-neutral px-8">
+          <button className="btn btn-neutral px-8" type="submit">
             <FaPersonWalkingArrowRight className="text-lg" />
             Register
           </button>

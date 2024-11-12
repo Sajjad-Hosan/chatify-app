@@ -1,7 +1,10 @@
 import { useState } from "react";
 import imageaa from "../../assets/image (3).jpg";
+import { useNavigate } from "react-router-dom";
+import { IoIosArrowBack } from "react-icons/io";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const [image, setImage] = useState(imageaa);
   const handleImage = (e) => {
     const file = e.target.files[0];
@@ -13,7 +16,15 @@ const Profile = () => {
     <div>
       <div className="max-w-screen-lg card h-[35rem] mx-auto mt-16 p-8">
         <div className="flex justify-between items-center">
-          <h1 className="font-semibold">Update Profile</h1>
+          <div className="flex justify-between items-center w-full">
+            <h1 className="font-semibold">Update Profile</h1>
+            <button
+              className="btn btn-sm btn-neutral"
+              onClick={() => navigate(-1)}
+            >
+              <IoIosArrowBack className="text-lg" /> Back
+            </button>
+          </div>
         </div>
         <div className="flex flex-col md:flex-row justify-between mt-10">
           <div className="flex flex-col items-center mt-5">

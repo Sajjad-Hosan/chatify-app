@@ -11,7 +11,7 @@ import {
 } from "firebase/auth";
 import app from "../firebase/firebase";
 
-export const AuthContext = new createContext(null);
+export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
   const googleProvider = new GoogleAuthProvider();
@@ -28,11 +28,11 @@ const AuthProvider = ({ children }) => {
     });
     return () => unSubscribe();
   }, []);
-  //
+  
   const createNewUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
-  const handleRegisterUser = (email, password) => {
+  const handleLoginUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
   const handleSignOut = () => {
@@ -44,8 +44,10 @@ const AuthProvider = ({ children }) => {
   const handleGoogle = () => handlePopUpSign(googleProvider);
 
   const contextValues = {
+    user,
+    loading,
     createNewUser,
-    handleRegisterUser,
+    handleLoginUser,
     handleSignOut,
     handleGoogle,
   };

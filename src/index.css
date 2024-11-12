@@ -4,6 +4,6 @@
 @tailwind utilities;
 
 * {
-  /* scroll-behavior: smooth; */
-  /* scrollbar-width: none; */
+  scroll-behavior: smooth;
+  scrollbar-width: none;
 }

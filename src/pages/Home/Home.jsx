@@ -38,7 +38,7 @@ const Home = () => {
           <div className="font-kaushan text-2xl">Chatify</div>
           <div className="flex items-center gap-3">
             <button
-              className="btn btn-sm btn-circle btn-ghost flex tooltip tooltip-bottom invisible"
+              className="btn btn-sm btn-circle btn-ghost flex tooltip tooltip-bottom lg:invisible"
               data-tip="Friends"
               onClick={() =>
                 document.getElementById("member_modal").showModal()

@@ -9,23 +9,50 @@ import { IoMdImages, IoMdInformationCircleOutline } from "react-icons/io";
 import ReactDOM from "react-dom";
 
 import image4 from "../../assets/group.png";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:4000");
 const ChatPage = () => {
-  const { user } = useContext(AuthContext);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+    // Listen for 'message' events from the server
+    socket.on("message", (newMessage) => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      console.log(newMessage.message);
+    });
+
+    // Cleanup the event listener when the component unmounts
+    return () => socket.off("message");
+  }, []);
+
+  const { user, data } = useContext(AuthContext);
   const messageRef = useRef();
+
   const handleSendChat = (messageData) => {
+    setMessage(messageData);
     const today = new Date();
-    const data = {
+    const dataaa = {
+      sendTo: "",
       time: today.toLocaleTimeString(),
       date: today.toLocaleDateString(),
       author: user.displayName,
+      author_id: data?.author_id,
+      image: user.photoURL,
       message: messageData,
+      groups: [],
     };
+    socket.emit("username", {
+      username: user.displayName,
+      email: user.email,
+    });
+    socket.emit("message", dataaa);
     const div = document.createElement("div");
     div.className = "flex w-full";
     document.getElementById("message_center").append(div);
-    ReactDOM.render(<SendBox msg={data} />, div);
+    ReactDOM.render(<SendBox msg={dataaa} />, div);
     messageRef.current.value = "";
   };
   return (
@@ -55,9 +82,11 @@ const ChatPage = () => {
             className="overflow-scroll w-full flex flex-col gap-5 items-start h-[32rem] p-2"
             id="message_center"
           >
-            <div className="flex justify-end w-full">
-              <ReceiveBox />
-            </div>
+            {messages.map((mm, i) => (
+              <div key={i} className="flex justify-end w-full">
+                <ReceiveBox msg={mm} />
+              </div>
+            ))}
           </div>
         </div>
         <footer className="flex justify-between items-center w-full md:w-[79%] fixed bottom-5 right-0  px-2">

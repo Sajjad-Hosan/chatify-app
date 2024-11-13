@@ -10,13 +10,16 @@ import {
   GoogleAuthProvider,
 } from "firebase/auth";
 import app from "../firebase/firebase";
+import useAxiosPublic from "../hooks/useAxiosPublic/useAxiosPublic";
 
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
+  const axiosPublic = useAxiosPublic();
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   //
+  const [data, setData] = useState([]);
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,10 +28,14 @@ const AuthProvider = ({ children }) => {
       console.log(current);
       setUser(current);
       setLoading(false);
+      axiosPublic.get(`/user?email=${current?.email}`).then((res) => {
+        console.log("DB DATA", res.data);
+        setData(res.data);
+      });
     });
     return () => unSubscribe();
   }, []);
-  
+
   const createNewUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -45,6 +52,7 @@ const AuthProvider = ({ children }) => {
 
   const contextValues = {
     user,
+    data,
     loading,
     createNewUser,
     handleLoginUser,

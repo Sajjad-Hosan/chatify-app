@@ -16,6 +16,7 @@ import axios from "axios";
 
 const Register = () => {
   const navigate = useNavigate();
+  const today = new Date();
   const axiosPublic = useAxiosPublic();
   const img_key = import.meta.env.VITE_IMGBB_KEY;
   const img_url = `https://api.imgbb.com/1/upload?key=${img_key}`;
@@ -41,9 +42,26 @@ const Register = () => {
         updateProfile(data?.user, {
           displayName: e.name,
           photoURL: imageUrl,
-        }).then(() => {
-          navigate("/");
-          toast.success("Successfully Register!");
+        }).then(async () => {
+          // send data to database
+          const data = {
+            author_id: "",
+            name: e.name,
+            email: e.email,
+            photoURL: imageUrl,
+            createDate: today.toLocaleDateString(),
+            createTime: today.toLocaleTimeString(),
+            lastLoginDate: "",
+            lastLoginTime: "",
+            author_groups: [],
+            join_groups: [],
+            friends: [],
+          };
+          const res2 = await axiosPublic.post("/user", data);
+          if (res2?.data) {
+            navigate("/");
+            toast.success("Successfully Register!");
+          }
         });
         toast.error("Something Wrong!");
       });

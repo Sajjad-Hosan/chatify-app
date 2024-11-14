@@ -15,7 +15,7 @@ const routes = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: "/",
+        path: "/chat",
         element: (
           <PrivateRoute>
             <Home />

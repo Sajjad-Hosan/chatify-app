@@ -23,27 +23,33 @@ const AuthProvider = ({ children }) => {
   const githubProvider = new GithubAuthProvider();
   //
   const [users, setUsers] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [data, setData] = useState([]);
+  const [requesters, setRequesters] = useState([]);
   const [user, setUser] = useState([]);
+  const [data, setData] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // chats
+  const [id, setId] = useState("");
+  const [chatUser, setChatUser] = useState("");
   const [chats, setChats] = useState([]);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
-      console.log(current);
       setUser(current);
       setLoading(false);
       axiosPublic.get(`/user?email=${current?.email}`).then((res) => {
         setData(res.data);
+        axiosPublic.get(`/requester/${res.data?._id}`).then((res2) => {
+          setRequesters(res2.data);
+        });
       });
       axiosPublic.get("/users").then((res) => {
         const currData = [...res.data];
         const filterData = currData.filter((e) => e?.email !== current?.email);
         setUsers(filterData);
       });
+
       axiosPublic.get("/groups").then((res) => {
         setGroups(res.data);
       });
@@ -54,15 +60,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     socket.emit("addUser", data._id);
-    socket.on("getUsers", (users) => {
-      console.log("sockets users", users);
-    });
+    socket.on("getUsers", (users) => {});
   }, [data._id]);
 
   useEffect(() => {
-    socket.off('getMessage')
+    socket.off("getMessage");
     socket.on("getMessage", (msgData) => {
-      console.log("auth socket receive", msgData);
       setChats((prev) => [...prev, msgData]);
     });
     return () => socket.off("getMessage");
@@ -84,12 +87,17 @@ const AuthProvider = ({ children }) => {
 
   const contextValues = {
     users,
+    requesters,
     user,
     groups,
     data,
     loading,
     chats,
     setChats,
+    chatUser,
+    setChatUser,
+    id,
+    setId,
     createNewUser,
     handleLoginUser,
     handleSignOut,

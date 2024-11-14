@@ -15,10 +15,9 @@ const Login = () => {
     handleLoginUser(e.email, e.password).then((res) => {
       console.log(res);
       if (res?.user) {
-        navigate("/");
+        navigate("/chat");
         toast.success("Login");
       }
-      toast.error("Something Wrong!");
     });
   };
   return (

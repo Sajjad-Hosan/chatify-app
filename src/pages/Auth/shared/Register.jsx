@@ -63,11 +63,10 @@ const Register = () => {
           };
           const res2 = await axiosPublic.post("/user", data);
           if (res2?.data) {
-            navigate("/");
+            navigate("/chat");
             toast.success("Successfully Register!");
           }
         });
-        toast.error("Something Wrong!");
       });
     }
   };

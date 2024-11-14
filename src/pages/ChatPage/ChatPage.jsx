@@ -1,4 +1,4 @@
-import { useLoaderData, useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IoCameraSharp } from "react-icons/io5";
 import { LuBadgePlus } from "react-icons/lu";
 import { BsSend } from "react-icons/bs";
@@ -6,22 +6,19 @@ import SendBox from "../../components/SendBox/SendBox";
 import ReceiveBox from "../../components/ReceiveBox/ReceiveBox";
 import { HiMicrophone } from "react-icons/hi";
 import { IoMdImages, IoMdInformationCircleOutline } from "react-icons/io";
-import ReactDOM from "react-dom";
 
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { io } from "socket.io-client";
 import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
 
 const socket = io("http://localhost:4000");
 const ChatPage = () => {
+  const { user, data, chats, setChats, chatUser, setChatUser } =
+    useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
-  const loader = useLoaderData();
   const { id } = useParams();
-  const { user, data, chats, setChats } = useContext(AuthContext);
   const messageRef = useRef();
-  const [chatUser, setChatUser] = useState("");
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const sendData = {
@@ -45,7 +42,6 @@ const ChatPage = () => {
       date: today.toLocaleDateString(),
     };
     socket.emit("sendMessage", msgData);
-    console.log("msgData", msgData);
     const res = await axiosPublic.post("/conversation", msgData);
     messageRef.current.value = "";
   };
@@ -78,11 +74,11 @@ const ChatPage = () => {
           >
             {chats.map((sendmsg, i) =>
               sendmsg?.from === data._id ? (
-                <div key={i} className="flex w-full">
+                <div key={i} className="flex w-full justify-end">
                   <SendBox msg={sendmsg} user={data} />
                 </div>
               ) : (
-                <div key={i} className="flex justify-end w-full">
+                <div key={i} className="flex w-full">
                   <ReceiveBox msg={sendmsg} user={data} />
                 </div>
               )

@@ -1,23 +1,18 @@
 import { IoSettingsOutline } from "react-icons/io5";
-
 import { RiMenu5Line } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
-
-import { TbUsersGroup } from "react-icons/tb";
+import { TbUserSearch, TbUsersGroup } from "react-icons/tb";
 import SettingModal from "../../components/SettingModal/SettingModal";
 import ProfileModal from "../../components/ProfileModal/ProfileModal";
 import MemberModal from "../../components/MemberModal/MemberModal";
 
-import image1 from "../../assets/image (1).png";
-import image2 from "../../assets/image (2).jpg";
-import image3 from "../../assets/image (3).jpg";
-import image4 from "../../assets/group.png";
 import InfoModal from "../../components/InfoModal/InfoModal";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import CreateGroupModal from "../../components/CreateGroupModal/CreateGroupModal";
 import { useContext } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import SearchPeopleModal from "../../components/SearchPeopleModal/SearchPeopleModal";
 
 const Home = () => {
   const { users, groups } = useContext(AuthContext);
@@ -28,6 +23,7 @@ const Home = () => {
       <MemberModal />
       <InfoModal />
       <CreateGroupModal />
+      <SearchPeopleModal/>
       {/* ------------------------- */}
       <div className="mx-auto h-screen p-2">
         <div className="flex justify-between items-center mx-3">
@@ -101,7 +97,16 @@ const Home = () => {
                 )}
               </ul>
             </div>
-            <p className="text-sm mt-6">Friends</p>
+            <div className="flex justify-between items-center mx-3">
+              <p className="text-sm">Friends</p>
+              <button
+                className="btn btn-sm btn-ghost btn-circle flex tooltip"
+                data-tip="Search People"
+                onClick={() => document.getElementById("search_modal").showModal()}
+              >
+                <TbUserSearch className="text-lg" />
+              </button>
+            </div>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[25rem]">
                 {users?.map(({ name, author_id, photoURL, _id }, i) => (

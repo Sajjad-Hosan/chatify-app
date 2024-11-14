@@ -1,15 +1,8 @@
-import { IoCameraSharp, IoSettingsOutline } from "react-icons/io5";
-import image from "../../assets/logo.png";
+import { IoSettingsOutline } from "react-icons/io5";
+
 import { RiMenu5Line } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
-import { LuBadgePlus } from "react-icons/lu";
-import { BsSend } from "react-icons/bs";
-import { CiMenuKebab } from "react-icons/ci";
-import MessageBoxOptions from "../../components/MessageBoxOptions/MessageBoxOptions";
-import SendBox from "../../components/SendBox/SendBox";
-import ReceiveBox from "../../components/ReceiveBox/ReceiveBox";
-import { HiMicrophone } from "react-icons/hi";
-import { IoMdImages, IoMdInformationCircleOutline } from "react-icons/io";
+
 import { TbUsersGroup } from "react-icons/tb";
 import SettingModal from "../../components/SettingModal/SettingModal";
 import ProfileModal from "../../components/ProfileModal/ProfileModal";
@@ -23,8 +16,11 @@ import InfoModal from "../../components/InfoModal/InfoModal";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import CreateGroupModal from "../../components/CreateGroupModal/CreateGroupModal";
+import { useContext } from "react";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Home = () => {
+  const { users, groups } = useContext(AuthContext);
   return (
     <>
       <SettingModal />
@@ -89,46 +85,43 @@ const Home = () => {
             </div>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[10rem]">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-                  <NavLink key={i} to={`/chat/${i}`}>
-                    <li className="flex-row gap-3 flex p-3 hover:bg-neutral cursor-pointer">
-                      <img
-                        src={image4}
-                        alt=""
-                        className="avatar w-5 h-5 rounded-full"
-                      />
-                      <h1 className="font-semibold text-sm">Group {i}</h1>
-                    </li>
-                  </NavLink>
-                ))}
-              </ul>
-            </div>
-            <p className="text-sm mt-6">Friends</p>
-            <div className="overflow-hidden">
-              <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[25rem]">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map(
-                  (i) => (
-                    <NavLink key={i} to={`/chat/${i}`}>
-                      <li className="card flex-row gap-3 p-3 flex items-end hover:bg-neutral cursor-pointer transition-all duration-100">
+                {groups?.map(
+                  ({ group_id, group_name, group_image, _id }, i) => (
+                    <NavLink key={i} to={`/group/${_id}`}>
+                      <li className="flex-row gap-3 flex p-3 hover:bg-neutral cursor-pointer">
                         <img
-                          src={image1}
+                          src={group_image}
                           alt=""
                           className="avatar w-5 h-5 rounded-full"
                         />
-                        <h1 className="font-semibold text-sm">
-                          Mark Henry {i}
-                        </h1>
+                        <h1 className="font-semibold text-sm">{group_name}</h1>
                       </li>
                     </NavLink>
                   )
                 )}
               </ul>
             </div>
+            <p className="text-sm mt-6">Friends</p>
+            <div className="overflow-hidden">
+              <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[25rem]">
+                {users?.map(({ name, author_id, photoURL, _id }, i) => (
+                  <NavLink key={i} to={`/chat/${_id}`}>
+                    <li className="card flex-row gap-3 p-3 flex items-end hover:bg-neutral cursor-pointer transition-all duration-100">
+                      <img
+                        src={photoURL}
+                        alt=""
+                        className="avatar w-5 h-5 rounded-full"
+                      />
+                      <h1 className="font-semibold text-sm">{name}</h1>
+                    </li>
+                  </NavLink>
+                ))}
+              </ul>
+            </div>
           </div>
           <div className="col-span-5 lg:col-span-4 md:p-5">
             <Outlet />
           </div>
-          {/* <div className="col-span-1 border">a</div> */}
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import MessageBoxOptions from "../MessageBoxOptions/MessageBoxOptions";
-const SendBox = ({ msg }) => {
-  const { message, time, image } = msg;
+const SendBox = ({ msg, user }) => {
+  const { message, time } = msg;
   return (
     <>
       <div className="card flex flex-col p-2 w-[400px] bg-neutral">
@@ -9,7 +9,7 @@ const SendBox = ({ msg }) => {
             <p className="mt-2 text-sm px-2">{message}</p>
             <div className="flex justify-between items-end gap-2">
               <img
-                src={image}
+                src={user?.photoURL}
                 alt=""
                 className="w-6 h-6 avatar rounded-full object-contain"
               />

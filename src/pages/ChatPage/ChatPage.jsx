@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData, useLocation, useParams } from "react-router-dom";
 import { IoCameraSharp } from "react-icons/io5";
 import { LuBadgePlus } from "react-icons/lu";
 import { BsSend } from "react-icons/bs";
@@ -8,51 +8,45 @@ import { HiMicrophone } from "react-icons/hi";
 import { IoMdImages, IoMdInformationCircleOutline } from "react-icons/io";
 import ReactDOM from "react-dom";
 
-import image4 from "../../assets/group.png";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { io } from "socket.io-client";
+import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
 
 const socket = io("http://localhost:4000");
 const ChatPage = () => {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-    // Listen for 'message' events from the server
-    socket.on("message", (newMessage) => {
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      console.log(newMessage.message);
-    });
-
-    // Cleanup the event listener when the component unmounts
-    return () => socket.off("message");
-  }, []);
-
-  const { user, data } = useContext(AuthContext);
+  const axiosPublic = useAxiosPublic();
+  const loader = useLoaderData();
+  const { id } = useParams();
+  const { user, data, chats, setChats } = useContext(AuthContext);
   const messageRef = useRef();
+  const [chatUser, setChatUser] = useState("");
+  const [messages, setMessages] = useState([]);
 
-  const handleSendChat = (messageData) => {
-    setMessage(messageData);
+  useEffect(() => {
+    const sendData = {
+      from: data._id,
+      to: id,
+    };
+    axiosPublic.post(`/conversations`, sendData).then((res) => {
+      setChats(res.data?.result);
+      setChatUser(res.data?.chatUser);
+    });
+  }, [id]);
+
+  const handleSendChat = async (messageData) => {
     const today = new Date();
-    const dataaa = {
-      sendTo: "",
+    const msgData = {
+      author: data.name,
+      from: data._id,
+      to: id,
+      message: messageData,
       time: today.toLocaleTimeString(),
       date: today.toLocaleDateString(),
-      author: user.displayName,
-      author_id: data?.author_id,
-      image: user.photoURL,
-      message: messageData,
-      groups: [],
     };
-    socket.emit("username", {
-      username: user.displayName,
-      email: user.email,
-    });
-    socket.emit("message", dataaa);
-    const div = document.createElement("div");
-    div.className = "flex w-full";
-    document.getElementById("message_center").append(div);
-    ReactDOM.render(<SendBox msg={dataaa} />, div);
+    socket.emit("sendMessage", msgData);
+    console.log("msgData", msgData);
+    const res = await axiosPublic.post("/conversation", msgData);
     messageRef.current.value = "";
   };
   return (
@@ -61,11 +55,11 @@ const ChatPage = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <img
-              src={image4}
-              alt=""
+              src={chatUser?.photoURL}
+              alt={chatUser?.name}
               className="w-10 h-10 object-contain rounded-full"
             />
-            <p className="text-lg">Group 1</p>
+            <p className="text-lg">{chatUser?.name}</p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -79,17 +73,23 @@ const ChatPage = () => {
         </div>
         <div className="mt-5 flex justify-between overflow-hidden h-full mb-10">
           <div
-            className="overflow-scroll w-full flex flex-col gap-5 items-start h-[32rem] p-2"
+            className="overflow-scroll w-full flex flex-col gap-5 items-start h-[32rem] p-2 mb-5"
             id="message_center"
           >
-            {messages.map((mm, i) => (
-              <div key={i} className="flex justify-end w-full">
-                <ReceiveBox msg={mm} />
-              </div>
-            ))}
+            {chats.map((sendmsg, i) =>
+              sendmsg?.from === data._id ? (
+                <div key={i} className="flex w-full">
+                  <SendBox msg={sendmsg} user={data} />
+                </div>
+              ) : (
+                <div key={i} className="flex justify-end w-full">
+                  <ReceiveBox msg={sendmsg} user={data} />
+                </div>
+              )
+            )}
           </div>
         </div>
-        <footer className="flex justify-between items-center w-full md:w-[79%] fixed bottom-5 right-0  px-2">
+        <footer className="flex justify-between items-center w-full lg:w-[79%] fixed bottom-5 right-0  px-2">
           <div className="flex items-center gap-2">
             <button
               className="btn btn-circle btn-ghost flex tooltip"

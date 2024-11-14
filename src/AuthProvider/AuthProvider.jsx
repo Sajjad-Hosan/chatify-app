@@ -12,6 +12,9 @@ import {
 import app from "../firebase/firebase";
 import useAxiosPublic from "../hooks/useAxiosPublic/useAxiosPublic";
 
+import { io } from "socket.io-client";
+const socket = io("http://localhost:4000");
+
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
   const auth = getAuth(app);
@@ -19,9 +22,14 @@ const AuthProvider = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
   const githubProvider = new GithubAuthProvider();
   //
+  const [users, setUsers] = useState([]);
+  const [groups, setGroups] = useState([]);
   const [data, setData] = useState([]);
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // chats
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
@@ -29,11 +37,35 @@ const AuthProvider = ({ children }) => {
       setUser(current);
       setLoading(false);
       axiosPublic.get(`/user?email=${current?.email}`).then((res) => {
-        console.log("DB DATA", res.data);
         setData(res.data);
       });
+      axiosPublic.get("/users").then((res) => {
+        const currData = [...res.data];
+        const filterData = currData.filter((e) => e?.email !== current?.email);
+        setUsers(filterData);
+      });
+      axiosPublic.get("/groups").then((res) => {
+        setGroups(res.data);
+      });
+      //
     });
     return () => unSubscribe();
+  }, []);
+
+  useEffect(() => {
+    socket.emit("addUser", data._id);
+    socket.on("getUsers", (users) => {
+      console.log("sockets users", users);
+    });
+  }, [data._id]);
+
+  useEffect(() => {
+    socket.off('getMessage')
+    socket.on("getMessage", (msgData) => {
+      console.log("auth socket receive", msgData);
+      setChats((prev) => [...prev, msgData]);
+    });
+    return () => socket.off("getMessage");
   }, []);
 
   const createNewUser = (email, password) => {
@@ -51,9 +83,13 @@ const AuthProvider = ({ children }) => {
   const handleGoogle = () => handlePopUpSign(googleProvider);
 
   const contextValues = {
+    users,
     user,
+    groups,
     data,
     loading,
+    chats,
+    setChats,
     createNewUser,
     handleLoginUser,
     handleSignOut,

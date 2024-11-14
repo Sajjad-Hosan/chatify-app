@@ -10,10 +10,13 @@ import { LuImagePlus } from "react-icons/lu";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import useAxiosPublic from "../../../hooks/useAxiosPublic/useAxiosPublic";
 import axios from "axios";
+import toast from "react-hot-toast";
 
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:4000");
 const Register = () => {
   const navigate = useNavigate();
   const today = new Date();
@@ -45,7 +48,7 @@ const Register = () => {
         }).then(async () => {
           // send data to database
           const data = {
-            author_id: "",
+            author_id: socket.id,
             name: e.name,
             email: e.email,
             photoURL: imageUrl,
@@ -56,6 +59,7 @@ const Register = () => {
             author_groups: [],
             join_groups: [],
             friends: [],
+            messages: [],
           };
           const res2 = await axiosPublic.post("/user", data);
           if (res2?.data) {

@@ -4,7 +4,7 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FaPersonWalkingArrowLoopLeft } from "react-icons/fa6";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();

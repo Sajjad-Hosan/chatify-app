@@ -31,6 +31,26 @@ const ChatPage = () => {
     });
   }, [id]);
 
+  const handleSendChatKey = async (e) => {
+    const key = e.key;
+    if (key === "Enter") {
+      console.log("");
+      const today = new Date();
+      const msgData = {
+        author: data.name,
+        from: data._id,
+        to: id,
+        message: messageRef.current.value,
+        time: today.toLocaleTimeString(),
+        date: today.toLocaleDateString(),
+      };
+      socket.emit("sendMessage", msgData);
+      const res = await axiosPublic.post("/conversation", msgData);
+      messageRef.current.value = "";
+    } else if (key === "Delete") {
+      messageRef.current.value = "";
+    }
+  };
   const handleSendChat = async (messageData) => {
     const today = new Date();
     const msgData = {
@@ -116,6 +136,7 @@ const ChatPage = () => {
             <textarea
               rows={1}
               ref={messageRef}
+              onKeyUp={handleSendChatKey}
               className="textarea textarea-bordered w-full"
             ></textarea>
             <button

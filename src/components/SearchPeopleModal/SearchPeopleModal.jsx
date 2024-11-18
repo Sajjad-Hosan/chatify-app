@@ -1,29 +1,45 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BsPeople, BsPersonCheck, BsPersonUp } from "react-icons/bs";
 import { HiXMark } from "react-icons/hi2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
+import { RiDeleteBin4Line } from "react-icons/ri";
+import toast from "react-hot-toast";
 
 const SearchPeopleModal = () => {
   const today = new Date();
   const [tab, setTab] = useState(0);
   const axiosPublic = useAxiosPublic();
-  const { users, data, requester } = useContext(AuthContext);
-  const handleSendRequest = async (id) => {
+  const { users, data, requesters } = useContext(AuthContext);
+  const handleSendRequest = async (id, name, email, photoURL) => {
     const requestData = {
       author: data?.name,
       from: data?._id,
       to: id,
+      to_name: name,
+      to_email: email,
+      to_photoURL: photoURL,
       request_date: today.toLocaleDateString(),
       request_time: today.toLocaleTimeString(),
     };
     const res = await axiosPublic.post("/send-request", requestData);
     console.log("request data", res.data);
   };
-  const handleAcceptRequest = async (id) => {
-    const data = {};
+  const handleAcceptRequest = async (id, user, from) => {
+    const data = {
+      friend_from: from,
+      to: user,
+      accept_date: today.toLocaleDateString(),
+      accept_time: today.toLocaleTimeString(),
+    };
     const res = await axiosPublic.post("/accept-request", data);
+    const res2 = await axiosPublic.delete(`/delete-request/${id}`);
     console.log("accept request", res.data);
+    console.log("accept request", res2.data);
+  };
+  const handleDelete = async (id) => {
+    const res = await axiosPublic.delete(`/delete-request/${id}`);
+    console.log(res.data);
   };
   return (
     <>
@@ -61,8 +77,9 @@ const SearchPeopleModal = () => {
           <div className="p-5 overflow-hidden">
             {tab === 0 ? (
               <ul className="overflow-scroll h-full grid grid-cols-2 gap-3 p-5">
-                {users?.map(({ _id, name, photoURL }, i) => (
+                {users?.map(({ _id, name, email, photoURL }, i) => (
                   <li
+                    key={i}
                     className={`flex flex-row justify-between p-2 hover:bg-neutral cursor-pointer `}
                   >
                     <div className="flex items-center gap-4">
@@ -76,7 +93,9 @@ const SearchPeopleModal = () => {
                     <div className="flex items-center gap-2">
                       <button
                         className="btn btn-sm px-8 btn-neutral"
-                        onClick={() => handleSendRequest(_id)}
+                        onClick={() =>
+                          handleSendRequest(_id, name, email, photoURL)
+                        }
                       >
                         <BsPersonUp className="text-lg" />
                         Send Request
@@ -87,29 +106,41 @@ const SearchPeopleModal = () => {
               </ul>
             ) : (
               <ul className="overflow-scroll h-full grid grid-cols-2 gap-3 p-5">
-                {requester?.map(({ _id, name, photoURL }, i) => (
-                  <li
-                    className={`flex flex-row justify-between p-2 hover:bg-neutral cursor-pointer `}
-                  >
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={photoURL}
-                        alt={name}
-                        className="avatar w-5 h-5 rounded-full"
-                      />
-                      <h1 className="font-semibold text-sm">{name}</h1>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        className="btn btn-sm px-8 btn-neutral"
-                        onClick={() => handleAcceptRequest(_id)}
-                      >
-                        <BsPersonCheck className="text-lg" />
-                        Accept Request
-                      </button>
-                    </div>
-                  </li>
-                ))}
+                {requesters?.map(
+                  ({ _id, to_name, to_email, to_photoURL, from }, i) => (
+                    <li
+                      key={i}
+                      className={`flex flex-row justify-between p-2 hover:bg-neutral cursor-pointer `}
+                    >
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={to_photoURL}
+                          alt={to_name}
+                          className="avatar w-5 h-5 rounded-full"
+                        />
+                        <h1 className="font-semibold text-sm">{to_name}</h1>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="btn btn-sm px-8 btn-neutral"
+                          onClick={() =>
+                            handleAcceptRequest(_id, data._id, from)
+                          }
+                        >
+                          <BsPersonCheck className="text-lg" />
+                          Accept Request
+                        </button>
+                        <button
+                          className="btn btn-sm btn-primary flex tooltip"
+                          data-tip="Delete"
+                          onClick={() => handleDelete(_id)}
+                        >
+                          <RiDeleteBin4Line className="text-lg" />
+                        </button>
+                      </div>
+                    </li>
+                  )
+                )}
               </ul>
             )}
           </div>

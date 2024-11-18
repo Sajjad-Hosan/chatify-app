@@ -72,14 +72,14 @@ const ChatPage = () => {
             className="overflow-scroll w-full flex flex-col gap-5 items-start h-[32rem] p-2 mb-5"
             id="message_center"
           >
-            {chats.map((sendmsg, i) =>
-              sendmsg?.from === data._id ? (
+            {chats.map((sendMsg, i) =>
+              sendMsg?.from === data._id ? (
                 <div key={i} className="flex w-full justify-end">
-                  <SendBox msg={sendmsg} user={data} />
+                  <SendBox msg={sendMsg} user={data} />
                 </div>
               ) : (
                 <div key={i} className="flex w-full">
-                  <ReceiveBox msg={sendmsg} user={data} />
+                  <ReceiveBox msg={sendMsg} user={data} />
                 </div>
               )
             )}

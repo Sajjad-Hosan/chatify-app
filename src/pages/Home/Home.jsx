@@ -15,7 +15,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import SearchPeopleModal from "../../components/SearchPeopleModal/SearchPeopleModal";
 
 const Home = () => {
-  const { users, groups } = useContext(AuthContext);
+  const { users, groups, requesters, data } = useContext(AuthContext);
   return (
     <>
       <SettingModal />
@@ -23,7 +23,7 @@ const Home = () => {
       <MemberModal />
       <InfoModal />
       <CreateGroupModal />
-      <SearchPeopleModal/>
+      <SearchPeopleModal />
       {/* ------------------------- */}
       <div className="mx-auto h-screen p-2">
         <div className="flex justify-between items-center mx-3">
@@ -81,7 +81,7 @@ const Home = () => {
             </div>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[10rem]">
-                {groups?.map(
+                {data?.groups?.map(
                   ({ group_id, group_name, group_image, _id }, i) => (
                     <NavLink key={i} to={`/group/${_id}`}>
                       <li className="flex-row gap-3 flex p-3 hover:bg-neutral cursor-pointer">
@@ -102,14 +102,16 @@ const Home = () => {
               <button
                 className="btn btn-sm btn-ghost btn-circle flex tooltip"
                 data-tip="Search People"
-                onClick={() => document.getElementById("search_modal").showModal()}
+                onClick={() =>
+                  document.getElementById("search_modal").showModal()
+                }
               >
                 <TbUserSearch className="text-lg" />
               </button>
             </div>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[25rem]">
-                {users?.map(({ name, author_id, photoURL, _id }, i) => (
+                {data?.friends?.map(({ name, author_id, photoURL, _id }, i) => (
                   <NavLink key={i} to={`/chat/${_id}`}>
                     <li className="card flex-row gap-3 p-3 flex items-end hover:bg-neutral cursor-pointer transition-all duration-100">
                       <img

@@ -9,7 +9,10 @@ import image2 from "../../assets/image (2).jpg";
 import image3 from "../../assets/image (3).jpg";
 import image4 from "../../assets/group.png";
 import { NavLink } from "react-router-dom";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 const MemberModal = () => {
+  const { groups, data } = useContext(AuthContext);
   return (
     <>
       <dialog id="member_modal" className="modal">
@@ -28,7 +31,7 @@ const MemberModal = () => {
           <div className="p-5">
             <div className="overflow-hidden">
               <ul className="flex flex-wrap gap-3 p-2 overflow-scroll ">
-                {[1, 2, 3, 4, 5].map((i) => (
+                {data?.groups?.map((i) => (
                   <NavLink key={i} to={`/chat/${i}`}>
                     <li
                       className="flex w-10 h-10 rounded-full justify-center items-center hover:bg-neutral cursor-pointer tooltip tooltip-right"
@@ -47,7 +50,7 @@ const MemberModal = () => {
             <p className="text-sm mt-6">Friends</p>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[23rem]">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+                {data?.friends?.map((i) => (
                   <NavLink key={i} to={`/chat/${i}`}>
                     <li className="card flex-row gap-3 p-3 flex items-end bg-neutral cursor-pointer">
                       <img

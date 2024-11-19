@@ -38,7 +38,7 @@ const AuthProvider = ({ children }) => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
       setUser(current);
       setLoading(false);
-      localStorage.setItem("token", current.getIdToken);
+      localStorage.setItem("token", current?.getIdToken);
       axiosPublic.get(`/user?email=${current?.email}`).then((res) => {
         setData(res.data);
         axiosPublic.get(`/requester/${res.data?._id}`).then((res2) => {

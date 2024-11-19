@@ -9,47 +9,54 @@ import { MdOutlineGroupAdd } from "react-icons/md";
 import ChatHome from "../pages/ChatPage/ChatHome";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
-const routes = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    children: [
-      {
-        path: "/chat",
-        element: (
-          <PrivateRoute>
-            <Home />
-          </PrivateRoute>
-        ),
-        children: [
-          {
-            path: "/chat",
-            element: (
-              <PrivateRoute>
-                <ChatHome />
-              </PrivateRoute>
-            ),
-          },
-          {
-            path: "/chat/:id",
-            element: (
-              <PrivateRoute>
-                <ChatPage />
-              </PrivateRoute>
-            ),
-          },
-        ],
-      },
-      {
-        path: "/auth",
-        element: <Auth />,
-      },
-      {
-        path: "/update-profile",
-        element: <Profile />,
-      },
-    ],
-  },
-]);
+const routes = createBrowserRouter(
+  [
+    {
+      path: "/",
+      element: (
+        <PrivateRoute>
+          <Root />
+        </PrivateRoute>
+      ),
+      children: [
+        {
+          path: "/chat",
+          element: (
+            <PrivateRoute>
+              <Home />
+            </PrivateRoute>
+          ),
+          children: [
+            {
+              path: "/chat",
+              element: (
+                <PrivateRoute>
+                  <ChatHome />
+                </PrivateRoute>
+              ),
+            },
+            {
+              path: "/chat/:id",
+              element: (
+                <PrivateRoute>
+                  <ChatPage />
+                </PrivateRoute>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/update-profile",
+          element: <Profile />,
+        },
+      ],
+    },
+    {
+      path: "/auth",
+      element: <Auth />,
+    },
+  ],
+
+);
 
 export default routes;

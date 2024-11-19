@@ -76,7 +76,7 @@ const SearchPeopleModal = () => {
           </div>
           <div className="p-5 overflow-hidden">
             {tab === 0 ? (
-              <ul className="overflow-scroll h-full grid grid-cols-2 gap-3 p-5">
+              <ul className="overflow-scroll h-full grid md:grid-cols-2 gap-3 p-5">
                 {users?.map(({ _id, name, email, photoURL }, i) => (
                   <li
                     key={i}
@@ -105,7 +105,7 @@ const SearchPeopleModal = () => {
                 ))}
               </ul>
             ) : (
-              <ul className="overflow-scroll h-full grid grid-cols-2 gap-3 p-5">
+              <ul className="overflow-scroll h-full grid md:grid-cols-2 gap-3 p-5">
                 {requesters?.map(
                   ({ _id, to_name, to_email, to_photoURL, from }, i) => (
                     <li

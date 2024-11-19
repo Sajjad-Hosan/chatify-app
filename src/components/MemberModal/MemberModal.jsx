@@ -11,6 +11,7 @@ import image4 from "../../assets/group.png";
 import { NavLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { TbUserSearch } from "react-icons/tb";
 const MemberModal = () => {
   const { groups, data } = useContext(AuthContext);
   return (
@@ -18,7 +19,18 @@ const MemberModal = () => {
       <dialog id="member_modal" className="modal">
         <div className="modal-box max-w-xl">
           <div className="flex justify-between items-center">
-            <h3 className="font-semibold text-lg">Friends</h3>
+            <div className="flex items-center gap-5">
+              <h3 className="font-semibold text-lg">Friends</h3>
+              <button
+                className="btn btn-sm btn-ghost btn-circle flex tooltip"
+                data-tip="Search People"
+                onClick={() =>
+                  document.getElementById("search_modal").showModal()
+                }
+              >
+                <TbUserSearch className="text-lg" />
+              </button>
+            </div>
             <form method="dialog">
               <button
                 className="btn btn-sm btn-circle btn-ghost flex tooltip tooltip-bottom"

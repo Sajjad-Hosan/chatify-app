@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiXMark } from "react-icons/hi2";
 
 const SettingModal = () => {
   const [theme, setTheme] = useState("dark");
   const [voice, setVoice] = useState(0);
   const [sound, setSound] = useState(0);
+
   const handleTheme = (theme) => {
     setTheme(theme);
     localStorage.setItem("theme", theme);

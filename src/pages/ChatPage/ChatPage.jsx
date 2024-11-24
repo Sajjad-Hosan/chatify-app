@@ -67,7 +67,7 @@ const ChatPage = () => {
   };
   return (
     <>
-    <InfoModal data={chatUser} />
+      <InfoModal data={chatUser} />
       <div className="flex flex-col justify-between h-full">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2 mt-2">
@@ -134,12 +134,12 @@ const ChatPage = () => {
             </button>
           </div>
           <div className="flex items-end gap-2 w-full">
-            <textarea
-              rows={1}
+            <input
+              type="text"
               ref={messageRef}
               onKeyUp={handleSendChatKey}
               className="textarea textarea-bordered w-full"
-            ></textarea>
+            />
             <button
               className="btn btn-neutral flex tooltip"
               data-tip="Send"

@@ -14,6 +14,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { TbUserSearch } from "react-icons/tb";
 const MemberModal = () => {
   const { groups, data } = useContext(AuthContext);
+  console.log(data);
   return (
     <>
       <dialog id="member_modal" className="modal">
@@ -43,34 +44,34 @@ const MemberModal = () => {
           <div className="p-5">
             <div className="overflow-hidden">
               <ul className="flex flex-wrap gap-3 p-2 overflow-scroll ">
-                {data?.groups?.map((i) => (
-                  <NavLink key={i} to={`/chat/${i}`}>
-                    <li
-                      className="flex w-10 h-10 rounded-full justify-center items-center hover:bg-neutral cursor-pointer tooltip tooltip-right"
-                      data-tip="Group-1"
-                    >
-                      <img
-                        src={image4}
-                        alt=""
-                        className="avatar rounded-full"
-                      />
-                    </li>
-                  </NavLink>
-                ))}
+                {data?.join_groups?.map(
+                  ({ group_id, group_name, group_image }, i) => (
+                    <NavLink key={i} to={`/group/${group_id}`}>
+                      <li
+                        className="flex w-10 h-10 rounded-full justify-center items-center hover:bg-neutral cursor-pointer tooltip tooltip-right"
+                        data-tip={group_name}
+                      >
+                        <img
+                          src={group_image}
+                          alt={group_name}
+                          className="avatar rounded-full"
+                        />
+                      </li>
+                    </NavLink>
+                  )
+                )}
               </ul>
             </div>
             <p className="text-sm mt-6">Friends</p>
-            <div className="overflow-hidden">
-              <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[23rem]">
-                {data?.friends?.map((i) => (
-                  <NavLink key={i} to={`/chat/${i}`}>
-                    <li className="card flex-row gap-3 p-3 flex items-end bg-neutral cursor-pointer">
-                      <img
-                        src={image1}
-                        alt=""
-                        className="avatar w-5 h-5 rounded-full"
-                      />
-                      <h1 className="font-semibold text-sm">Mark Henry</h1>
+            <div>
+              <ul className="grid grid-cols-4 gap-3 p-2 overflow-scroll h-[23rem]">
+                {data?.friends?.map(({ _id, name, photoURL }, i) => (
+                  <NavLink key={i} to={`/chat/${_id}`}>
+                    <li
+                      className="flex cursor-pointer tooltip tooltip-bottom w-8 h-8"
+                      data-tip={name}
+                    >
+                      <img src={photoURL} alt={name} className="rounded-full" />
                     </li>
                   </NavLink>
                 ))}

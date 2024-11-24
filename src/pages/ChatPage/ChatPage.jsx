@@ -11,8 +11,9 @@ import { useContext, useEffect, useRef } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { io } from "socket.io-client";
 import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
+import InfoModal from "../../components/InfoModal/InfoModal";
 
-const socket = io("http://localhost:4000");
+const socket = io(import.meta.env.VITE_API_LOCAL);
 const ChatPage = () => {
   const { user, data, chats, setChats, chatUser, setChatUser } =
     useContext(AuthContext);
@@ -34,7 +35,6 @@ const ChatPage = () => {
   const handleSendChatKey = async (e) => {
     const key = e.key;
     if (key === "Enter") {
-      console.log("");
       const today = new Date();
       const msgData = {
         author: data.name,
@@ -67,9 +67,10 @@ const ChatPage = () => {
   };
   return (
     <>
+    <InfoModal data={chatUser} />
       <div className="flex flex-col justify-between h-full">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 mt-2">
             <img
               src={chatUser?.photoURL}
               alt={chatUser?.name}
@@ -89,7 +90,7 @@ const ChatPage = () => {
         </div>
         <div className="mt-5 flex justify-between overflow-hidden h-full mb-10">
           <div
-            className="overflow-scroll w-full flex flex-col gap-5 items-start h-[32rem] p-2 mb-5"
+            className="overflow-scroll w-full flex flex-col gap-5 items-start h-full md:h-[32rem] p-2 mb-5"
             id="message_center"
           >
             {chats.map((sendMsg, i) =>
@@ -106,7 +107,7 @@ const ChatPage = () => {
           </div>
         </div>
         <footer className="flex justify-between items-center w-full lg:w-[79%] fixed bottom-5 right-0  px-2">
-          <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2">
             <button
               className="btn btn-circle btn-ghost flex tooltip"
               data-tip="More"
@@ -132,7 +133,7 @@ const ChatPage = () => {
               <IoMdImages className="text-lg" />
             </button>
           </div>
-          <div className="flex items-end gap-2 w-3/4">
+          <div className="flex items-end gap-2 w-full">
             <textarea
               rows={1}
               ref={messageRef}

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { FiPlus } from "react-icons/fi";
 import { LuImagePlus } from "react-icons/lu";
 
@@ -6,17 +6,19 @@ import { io } from "socket.io-client";
 import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
-const socket = io("http://localhost:4000");
+const socket = io(import.meta.env.VITE_API_LOCAL);
 const CreateGroupModal = () => {
+  const { data } = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
   const today = new Date();
   const img_key = import.meta.env.VITE_IMGBB_KEY;
   const img_url = `https://api.imgbb.com/1/upload?key=${img_key}`;
   const imageRef = useRef();
+
   const handleCreateGroup = async (e) => {
     e.preventDefault();
-
     const imageData = {
       image: imageRef.current.files[0],
     };
@@ -27,19 +29,38 @@ const CreateGroupModal = () => {
     });
     if (res.data.data) {
       const imageUrl = res.data?.data?.display_url;
-      const data = {
-        group_id: socket.id,
+      const groupData = {
         group_name: e.target.name.value,
         group_image: imageUrl,
         about: e.target.about.value,
-        group_members: [],
-        group_admin: [],
+        group_members: [
+          {
+            member_id: data._id,
+            name: data.name,
+            email: data.email,
+            photoURL: data.photoURL,
+            admin: true,
+            block: false,
+            mute: false,
+          },
+        ],
+        group_admin: [
+          {
+            member_id: data._id,
+            name: data.name,
+            email: data.email,
+            photoURL: data.photoURL,
+            admin: true,
+            block: false,
+            mute: false,
+          },
+        ],
         block_members: [],
         group_messages: [],
         create_time: today.toLocaleDateString(),
         create_date: today.toLocaleTimeString(),
       };
-      const res2 = await axiosPublic.post("/group", data);
+      const res2 = await axiosPublic.post("/group", groupData);
       if (res2.data) {
         e.target.reset();
         return toast.success("Group Created!");

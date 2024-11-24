@@ -13,7 +13,7 @@ const Login = () => {
   const { handleSubmit, register } = useForm();
   const handleLogin = (e) => {
     handleLoginUser(e.email, e.password).then((res) => {
-      console.log(res);
+  
       if (res?.user) {
         navigate("/chat");
         toast.success("Login");

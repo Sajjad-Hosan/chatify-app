@@ -1,18 +1,18 @@
 import { IoSettingsOutline } from "react-icons/io5";
-import { RiMenu5Line } from "react-icons/ri";
+import { RiMenu5Line, RiUserReceived2Line } from "react-icons/ri";
 import { FaRegUserCircle } from "react-icons/fa";
 import { TbUserSearch, TbUsersGroup } from "react-icons/tb";
 import SettingModal from "../../components/SettingModal/SettingModal";
 import ProfileModal from "../../components/ProfileModal/ProfileModal";
 import MemberModal from "../../components/MemberModal/MemberModal";
 
-import InfoModal from "../../components/InfoModal/InfoModal";
 import { NavLink, Outlet } from "react-router-dom";
 import { MdOutlineGroupAdd } from "react-icons/md";
 import CreateGroupModal from "../../components/CreateGroupModal/CreateGroupModal";
 import { useContext } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import SearchPeopleModal from "../../components/SearchPeopleModal/SearchPeopleModal";
+import RequestMemberModal from "../../components/InfoModal/shared/RequestMemberModal";
 
 const Home = () => {
   const { users, groups, requesters, data } = useContext(AuthContext);
@@ -21,9 +21,9 @@ const Home = () => {
       <SettingModal />
       <ProfileModal />
       <MemberModal />
-      <InfoModal />
       <CreateGroupModal />
       <SearchPeopleModal />
+      <RequestMemberModal />
       {/* ------------------------- */}
       <div className="mx-auto h-screen p-2">
         <div className="flex justify-between items-center mx-3">
@@ -69,21 +69,32 @@ const Home = () => {
           <div className="col-span-1 border-r hidden lg:flex flex-col">
             <div className="flex items-center justify-between mx-3">
               <p className="text-sm">Groups</p>
-              <button
-                className="btn btn-sm btn-circle btn-ghost flex tooltip"
-                data-tip="Create Group"
-                onClick={() =>
-                  document.getElementById("create_group").showModal()
-                }
-              >
-                <MdOutlineGroupAdd className="text-lg" />
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  className="btn btn-sm btn-circle btn-ghost flex tooltip tooltip-bottom"
+                  data-tip="Request members"
+                  onClick={() =>
+                    document.getElementById("requesters_member").showModal()
+                  }
+                >
+                  <RiUserReceived2Line className="text-lg" />
+                </button>
+                <button
+                  className="btn btn-sm btn-circle btn-ghost flex tooltip"
+                  data-tip="Create Group"
+                  onClick={() =>
+                    document.getElementById("create_group").showModal()
+                  }
+                >
+                  <MdOutlineGroupAdd className="text-lg" />
+                </button>
+              </div>
             </div>
             <div className="overflow-hidden">
               <ul className="flex flex-col gap-3 p-2 overflow-scroll h-[10rem]">
-                {data?.groups?.map(
-                  ({ group_id, group_name, group_image, _id }, i) => (
-                    <NavLink key={i} to={`/group/${_id}`}>
+                {data?.join_groups?.map(
+                  ({ group_id, group_name, group_image }, i) => (
+                    <NavLink key={i} to={`/group/${group_id}`}>
                       <li className="flex-row gap-3 flex p-3 hover:bg-neutral cursor-pointer">
                         <img
                           src={group_image}

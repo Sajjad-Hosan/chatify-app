@@ -14,9 +14,6 @@ import useAxiosPublic from "../../../hooks/useAxiosPublic/useAxiosPublic";
 import axios from "axios";
 import toast from "react-hot-toast";
 
-import { io } from "socket.io-client";
-
-const socket = io("http://localhost:4000");
 const Register = () => {
   const navigate = useNavigate();
   const today = new Date();
@@ -28,7 +25,7 @@ const Register = () => {
   const [show, setShow] = useState(false);
   const { register, handleSubmit } = useForm();
   const handleRegister = async (e) => {
-    // console.log(e);
+  
     const imgData = {
       image: image,
     };
@@ -37,18 +34,17 @@ const Register = () => {
         "content-type": "multipart/form-data",
       },
     });
-    console.log(res.data?.data.display_url);
+  
     if (res.data?.data) {
       const imageUrl = res.data?.data.display_url;
       createNewUser(e.email, e.password).then((data) => {
-        console.log(data);
+     
         updateProfile(data?.user, {
           displayName: e.name,
           photoURL: imageUrl,
         }).then(async () => {
           // send data to database
           const data = {
-            author_id: socket.id,
             name: e.name,
             email: e.email,
             photoURL: imageUrl,

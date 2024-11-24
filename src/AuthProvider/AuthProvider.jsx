@@ -13,7 +13,7 @@ import app from "../firebase/firebase";
 import useAxiosPublic from "../hooks/useAxiosPublic/useAxiosPublic";
 
 import { io } from "socket.io-client";
-const socket = io("http://localhost:4000");
+const socket = io(import.meta.env.VITE_API_LOCAL);
 
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
@@ -30,9 +30,10 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // chats
-  const [id, setId] = useState("");
-  const [chatUser, setChatUser] = useState("");
   const [chats, setChats] = useState([]);
+  const [chatUser, setChatUser] = useState("");
+  const [groupMessage, setGroupMessage] = useState([]);
+  const [gr_requesters, setGr_Requesters] = useState([]);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
@@ -44,13 +45,15 @@ const AuthProvider = ({ children }) => {
         axiosPublic.get(`/requester/${res.data?._id}`).then((res2) => {
           setRequesters(res2.data);
         });
+        axiosPublic.get(`/group-requests/${res.data?._id}`).then((res3) => {
+          setGr_Requesters(res3.data);
+        });
       });
       axiosPublic.get("/users").then((res) => {
         const currData = [...res.data];
         const filterData = currData.filter((e) => e?.email !== current?.email);
         setUsers(filterData);
       });
-
       axiosPublic.get("/groups").then((res) => {
         setGroups(res.data);
       });
@@ -96,9 +99,11 @@ const AuthProvider = ({ children }) => {
     chats,
     setChats,
     chatUser,
+    groupMessage,
+    gr_requesters,
+    setGr_Requesters,
+    setGroupMessage,
     setChatUser,
-    id,
-    setId,
     createNewUser,
     handleLoginUser,
     handleSignOut,

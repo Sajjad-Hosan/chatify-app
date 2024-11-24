@@ -23,7 +23,7 @@ const SearchPeopleModal = () => {
       request_time: today.toLocaleTimeString(),
     };
     const res = await axiosPublic.post("/send-request", requestData);
-    console.log("request data", res.data);
+  
   };
   const handleAcceptRequest = async (id, user, from) => {
     const data = {
@@ -34,12 +34,11 @@ const SearchPeopleModal = () => {
     };
     const res = await axiosPublic.post("/accept-request", data);
     const res2 = await axiosPublic.delete(`/delete-request/${id}`);
-    console.log("accept request", res.data);
-    console.log("accept request", res2.data);
+  
   };
   const handleDelete = async (id) => {
     const res = await axiosPublic.delete(`/delete-request/${id}`);
-    console.log(res.data);
+  
   };
   return (
     <>

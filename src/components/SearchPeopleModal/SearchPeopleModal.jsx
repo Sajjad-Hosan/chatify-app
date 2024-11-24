@@ -5,16 +5,20 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useAxiosPublic from "../../hooks/useAxiosPublic/useAxiosPublic";
 import { RiDeleteBin4Line } from "react-icons/ri";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const SearchPeopleModal = () => {
   const today = new Date();
+  const navigate = useNavigate();
   const [tab, setTab] = useState(0);
   const axiosPublic = useAxiosPublic();
   const { users, data, requesters } = useContext(AuthContext);
+
   const handleSendRequest = async (id, name, email, photoURL) => {
     const requestData = {
       author: data?.name,
       from: data?._id,
+      photo_url: data?.imageURL,
       to: id,
       to_name: name,
       to_email: email,
@@ -23,7 +27,12 @@ const SearchPeopleModal = () => {
       request_time: today.toLocaleTimeString(),
     };
     const res = await axiosPublic.post("/send-request", requestData);
-  
+    console.log(res.data?.message);
+    if (res.data?.message) {
+      return toast.success(res.data?.message);
+    }
+    return toast.success("Request send");
+    navigate("/chat");
   };
   const handleAcceptRequest = async (id, user, from) => {
     const data = {
@@ -34,11 +43,17 @@ const SearchPeopleModal = () => {
     };
     const res = await axiosPublic.post("/accept-request", data);
     const res2 = await axiosPublic.delete(`/delete-request/${id}`);
-  
+    if (res.data) {
+      toast.success("Request accept!");
+      navigate("/chat");
+    }
   };
   const handleDelete = async (id) => {
     const res = await axiosPublic.delete(`/delete-request/${id}`);
-  
+    if (res) {
+      toast.success("Request deleted!");
+      navigate("/chat");
+    }
   };
   return (
     <>
@@ -105,41 +120,37 @@ const SearchPeopleModal = () => {
               </ul>
             ) : (
               <ul className="overflow-scroll h-full grid md:grid-cols-2 gap-3 p-5">
-                {requesters?.map(
-                  ({ _id, to_name, to_email, to_photoURL, from }, i) => (
-                    <li
-                      key={i}
-                      className={`flex flex-row justify-between p-2 hover:bg-neutral cursor-pointer `}
-                    >
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={to_photoURL}
-                          alt={to_name}
-                          className="avatar w-5 h-5 rounded-full"
-                        />
-                        <h1 className="font-semibold text-sm">{to_name}</h1>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          className="btn btn-sm px-8 btn-neutral"
-                          onClick={() =>
-                            handleAcceptRequest(_id, data._id, from)
-                          }
-                        >
-                          <BsPersonCheck className="text-lg" />
-                          Accept Request
-                        </button>
-                        <button
-                          className="btn btn-sm btn-primary flex tooltip"
-                          data-tip="Delete"
-                          onClick={() => handleDelete(_id)}
-                        >
-                          <RiDeleteBin4Line className="text-lg" />
-                        </button>
-                      </div>
-                    </li>
-                  )
-                )}
+                {requesters?.map(({ _id, from, author, imageURL }, i) => (
+                  <li
+                    key={i}
+                    className={`flex flex-row justify-between p-2 hover:bg-neutral cursor-pointer `}
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={imageURL}
+                        alt={author}
+                        className="avatar w-5 h-5 rounded-full"
+                      />
+                      <h1 className="font-semibold text-sm">{author}</h1>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="btn btn-sm px-8 btn-neutral"
+                        onClick={() => handleAcceptRequest(_id, data._id, from)}
+                      >
+                        <BsPersonCheck className="text-lg" />
+                        Accept Request
+                      </button>
+                      <button
+                        className="btn btn-sm btn-primary flex tooltip"
+                        data-tip="Delete"
+                        onClick={() => handleDelete(_id)}
+                      >
+                        <RiDeleteBin4Line className="text-lg" />
+                      </button>
+                    </div>
+                  </li>
+                ))}
               </ul>
             )}
           </div>

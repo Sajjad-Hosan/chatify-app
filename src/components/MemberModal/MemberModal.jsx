@@ -14,7 +14,6 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { TbUserSearch } from "react-icons/tb";
 const MemberModal = () => {
   const { groups, data } = useContext(AuthContext);
-  console.log(data);
   return (
     <>
       <dialog id="member_modal" className="modal">

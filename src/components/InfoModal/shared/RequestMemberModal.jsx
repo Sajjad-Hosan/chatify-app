@@ -2,15 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import useAxiosPublic from "../../../hooks/useAxiosPublic/useAxiosPublic";
 import { HiXMark } from "react-icons/hi2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const RequestMemberModal = ({ group }) => {
   const today = new Date();
+  const navigate = useNavigate()
   const { data, gr_requesters } = useContext(AuthContext);
   const axiosPublic = useAxiosPublic();
 
  
   const handleAcceptRequest = (data) => {
-  
     const acceptData = {
       request_id: data._id,
       user_id: data.user_id,
@@ -28,7 +29,7 @@ const RequestMemberModal = ({ group }) => {
       accept_time: today.toLocaleTimeString(),
     };
     axiosPublic.post(`/group-request-accept`, acceptData).then((res) => {
-    
+    navigate(0)
     });
   };
   return (

@@ -44,9 +44,11 @@ const AuthProvider = ({ children }) => {
         setData(res.data);
         axiosPublic.get(`/requester/${res.data?._id}`).then((res2) => {
           setRequesters(res2.data);
+          console.log("requester", res2.data);
         });
         axiosPublic.get(`/group-requests/${res.data?._id}`).then((res3) => {
           setGr_Requesters(res3.data);
+          console.log(res3.data);
         });
       });
       axiosPublic.get("/users").then((res) => {

@@ -9,7 +9,7 @@ const ChatHome = () => {
       <div className="flex justify-center items-center h-full">
         <div className="card p-8 text-center">
           <h1 className="text-2xl font-light font-kaushan">
-            Welcome to Chatify!
+            Welcome to Ch4tify
           </h1>
           <p className="text-sm mt-1">Feel free to join our community.</p>
           <div className="flex items-center gap-3 mt-4">
@@ -21,7 +21,7 @@ const ChatHome = () => {
             >
               <MdOutlineGroupAdd className="text-lg" /> Create Group
             </button>
-            <button className="btn btn-sm btn-info px-8">
+            <button className="btn btn-sm btn-info px-8" disabled> 
               <BsPersonPlus className="text-lg" /> Ask to join
             </button>
           </div>
